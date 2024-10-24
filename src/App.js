@@ -2,13 +2,16 @@ import React from "react";
 import {BrowserRouter} from 'react-router-dom';
 import AppRouter from "./Components/route/AppRouter";
 import useNews from "./Hooks/useNews";
+import { AuthProvider } from "./Components/context/AuthContext";
 
 export default function App(){
-  //Обькет для хранения состояния новостей
+  //Объкет для хранения состояния новостей
   const [news,setNews] = useNews();
   return (
     <BrowserRouter>
-      <AppRouter news={news} setNews={setNews}/>
+      <AuthProvider>
+        <AppRouter news={news} setNews={setNews}/>
+      </AuthProvider>
     </BrowserRouter>
   );
 }

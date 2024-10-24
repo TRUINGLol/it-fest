@@ -1,0 +1,11 @@
+.admin{
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.b{
+    background-color: black;
+    color: white;
+}

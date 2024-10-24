@@ -1,17 +1,22 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import { PublicRoutes, PrivateRoutes } from "./AvailableRoutes";
+import News from "../../Pages/News";
+import AdminPanel from "../../Pages/AdminPanel";
+import { useAuth } from "../context/AuthContext";
 
 //Объект отвечающий за обработку маршрутов сайта (используется react-router-dom)
 
 /**
  * @returns {HTML} Маршруты по которым пользователь может переходить
  */
-export default function AppRouter(){
+export default function AppRouter({news,setNews}){
     
-    //TODO:Сделать логику Auth, отдлеьный файл?
-    //25
-    const [isAuth, setIsAuth] = useState(false);
+    const {isAuth} = useAuth();
+
+    useEffect(()=>{
+        console.log(isAuth);
+    },[isAuth])
 
     return (
         <Routes>
@@ -20,13 +25,19 @@ export default function AppRouter(){
                     <Route key={route.path} path={route.path} element={route.element}/>)
             }
             {
+                <Route key={"route-news"} path={'/news'} element={<News news={news}/>}/>
+            }
+            {
                 PrivateRoutes.map((route)=>
                     isAuth ? <Route key={route.path} path={route.path} element={route.element}/>
                     :
-                    <Route path="/login" element={<Navigate to={'/login'}/>}/>)
+                    null)
             }
-            <Route path="/" element={<Navigate to={'/main'}/>}/>
-            <Route path="/*" element={<Navigate to={'/404NotFound'}/>}/>
+            {
+                isAuth ? <Route key={"route-admin"} path="/admin" element={<AdminPanel setNews={setNews}/>}/> : null 
+            }
+            <Route key={"route-main"} path="/" element={<Navigate to={'/main'}/>}/>
+            <Route key={"route-notFound"} path="/*" element={<Navigate to={'/404NotFound'}/>}/>
         </Routes>
     );
 }

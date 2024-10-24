@@ -1,5 +1,7 @@
 import {useState, useEffect} from "react";
 
+//Хук отвечающий за логику хранения новостей
+
 export default function useNews(){
     const [news,setNews] = useState(()=>{
         const savedNews = localStorage.getItem("news");
